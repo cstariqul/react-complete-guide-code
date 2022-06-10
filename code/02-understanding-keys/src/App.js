@@ -27,6 +27,7 @@ const DUMMY_EXPENSES = [
 
 const App = () => {
   const [expenses, setExpenses] = useState(DUMMY_EXPENSES);
+  const [filteredYear, setFilteredYear] = useState('*');
 
   const addExpenseHandler = (expense) => {
     setExpenses((prevExpenses) => {
@@ -34,17 +35,18 @@ const App = () => {
     });
   };
 
-  // return React.createElement(
-  //   'div',
-  //   {},
-  //   React.createElement('h2', {}, "Let's get started!"),
-  //   React.createElement(Expenses, { items: expenses })
-  // );
+  const filterChangeHandler = (selectedYear) => {
+    setFilteredYear(selectedYear);
+  };
+
+  const filteredExpenses = expenses.filter((item) => {
+    return filteredYear=='*'?true:item.date.getFullYear() == filteredYear;
+  });
 
   return (
     <div>
       <NewExpense onAddExpense={addExpenseHandler} />
-      <Expenses items={expenses} />
+      <Expenses onFilterChange={filterChangeHandler} filteredYear={filteredYear} items={filteredExpenses}  />
     </div>
   );
 };
